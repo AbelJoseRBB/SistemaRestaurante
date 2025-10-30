@@ -1,19 +1,63 @@
 import java.util.ArrayList;
+import  java.util.List;
 import  Usuarios.*;
 
 public class Comanda {
-    private boolean fechada = false;
-    ArrayList<Pedido> pedidos = new ArrayList<>();
+    private int numero;
+    private String clienteNome;
+    private boolean fechada;
+    private List<Pedido> pedidos;
 
-    public Comanda(){}
-
-    public void setPedidos(Pedido pedido) {
-        if(!fechada)
-            pedidos.add(pedido);
+    public Comanda(int numero) {
+        this.numero = numero;
+        this.pedidos = new ArrayList<>();
+        this.fechada = false;
     }
 
-    public void fecharConta(){
+    public boolean isFechada() {
+        return fechada;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void adicionarPedido(Pedido p){
+        if(fechada) throw new IllegalArgumentException("Comanda já está fecha");
+        pedidos.add(p);
+    }
+
+    public boolean removerPedido(int indice){
+        if(fechada) return false;
+        if(indice < 0 || indice > pedidos.size()) return  false;
+        pedidos.remove(indice);
+        return  true;
+    }
+
+    public double calcularTotal(){
+        double total = 0.0;
+        for(Pedido e: pedidos) total += e.getSubtotal();
+        return total;
+    }
+
+    public void fechar(){
+        if(fechada) throw new IllegalStateException("Comando já estava fechada");
         fechada = true;
+    }
+
+    public List<Pedido> getPedidos(){
+        return new ArrayList<>(pedidos);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Comanda #").append(numero).append(fechada ? " (FECHADA)\n" : " (ABERTA)\n");
+        for (int i = 0; i < pedidos.size(); i++) {
+            sb.append(i).append(": ").append(pedidos.get(i).toString()).append("\n");
+        }
+        sb.append(String.format("Total: R$ %.2f\n", calcularTotal()));
+        return sb.toString();
     }
 
 

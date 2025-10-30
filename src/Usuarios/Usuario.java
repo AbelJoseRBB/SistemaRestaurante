@@ -3,9 +3,14 @@ package Usuarios;
 public class Usuario {
 
     private String nome, senha;
-    protected boolean acessoEstoque;
+    protected boolean acessoEstoque = false;
 
     public Usuario() {
+    }
+
+    public Usuario(String nome, String senha){
+        this.nome = nome;
+        this.senha = senha;
     }
 
     public String getNome() {
@@ -23,4 +28,11 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public boolean autenticar(String senha){
+        return this.senha != null && this.senha.equals(senha);
+    }
+
+    public boolean hasAcessoEstoque(){return acessoEstoque;}
+
 }

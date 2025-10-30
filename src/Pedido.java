@@ -1,51 +1,47 @@
 import Usuarios.Usuario;
+import java.util.Date;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class Pedido {
 
-    private Mesa mesa;
-    private Usuario atendente;
-    private Cliente cliente;
-    private Calendar horarioPedido = new GregorianCalendar(); // Falta pegar o horario atual do Pedido
     private Produto produtoPedido;
     private int quantidade;
     private String observacao;
+    private Date horario;
 
-    public Pedido(){}
-
-    public Mesa getMesa() {
-        return mesa;
-    }
-
-    public Usuario getAtendente() {
-        return atendente;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void getPedido() {
-        System.out.println(quantidade + "----" + produtoPedido);
-    }
-
-    public void setPedidoAtual(Produto pedidoAtual, int quantidade) {
-        this.produtoPedido = pedidoAtual;
+    public Pedido(Produto produto, int quantidade, String observacao){
+        if(quantidade <= 0 ) throw new IllegalArgumentException("Quantidade invalida");
+        this.produtoPedido = produto;
         this.quantidade = quantidade;
+        this.observacao = observacao;
+        this.horario = new Date();
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public Produto getProdutoPedido() {
+        return produtoPedido;
     }
 
-    public void setAtendente(Usuario atendente) {
-        this.atendente = atendente;
+    public int getQuantidade() {
+        return quantidade;
     }
 
-    public void setMesa(Mesa mesa) {
-        this.mesa = mesa;
+    public String getObservacao() {
+        return observacao;
     }
+
+    public Date getHorario() {
+        return horario;
+    }
+
+    public double getSubtotal(){
+        return  produtoPedido.getPreco() * quantidade;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s x%d = R$ %.2f %s", produtoPedido.getNome(), quantidade, getSubtotal(),
+                (observacao == null || observacao.isEmpty()) ? "" : ("(" + observacao + ")"));
+    }
+
 
 }
